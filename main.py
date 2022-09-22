@@ -1,13 +1,22 @@
 import random
 from season import Season
+from league_structures import League
+from league_structures import display_standings
+from player import Player
+from team import Team
 
 
-random.seed(53)
+random.seed(50)
 
-firstSeason = Season(2022, 16, "NFL")
-print(firstSeason)
+firstLeague = League("The National Football League")
+print(firstLeague)
+seasonOne = Season(2023, 17)
+firstLeague.seasons.append(seasonOne)
 
-firstSeason.generate_teams(32)
-firstSeason.generate_schedule()
-firstSeason.simulate()
-firstSeason.display_standings()
+
+seasonOne.generate_teams(32)
+seasonOne.generate_schedule()
+seasonOne.simulate()
+display_standings(seasonOne.teams)
+
+

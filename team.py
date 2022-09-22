@@ -2,45 +2,36 @@ import names
 from player import Player
 
 class Team:
-    def __init__(self, city, nickname, generate_roster=(True, 10)):
+    def __init__(self, city, nickname, generate_roster=(False, 0)):
         self.city = city
         self.nickname = nickname
         self.wins = 0
         self.losses = 0
         self.schedule = []
-        self.active_roster = []
+        self.roster = []
+        self.games_remaining = 0
+        self.games_played = 0
+        self.divison = None
+        self.conference = None
         
         if generate_roster[0] is True:
-            self.active_roster = self.generate_roster(generate_roster[1])
+            if generate_roster[1] < 1:
+                raise Exception("Cannot generate roster of {} players".format(generate_roster[1]))
+            self.generate_roster(generate_roster[1])
 
-    def __str__(self):
-        return "{} {}: ({}-{})".format(self.city, self.nickname, self.wins, self.losses)
+    def __repr__(self):
+        return "Team: {} {}\nGP: {}\nGR: {}\nRecord: {}-{}\n".format(self.city, self.nickname, self.games_played, self.games_remaining, self.wins, self.losses)
 
-    def get_name(self):
+    def team_name(self):
         return self.city + " " + self.nickname
-
-    def get_active_roster(self):
-        return self.active_roster
 
     def get_record(self):
         return (self.wins, self.losses)
 
-    def get_schedule(self):
-        return self.schedule
-
-    def add_win(self):
-        self.wins+=1
-
-    def add_loss(self):
-        self.losses+=1
-
-    def add_game_to_schedule(self, game):
-        self.schedule.append(game)
-
     def generate_roster(self, nrOfPlayers):
-        roster_list = []
+        if nrOfPlayers < 1:
+            raise Exception(f"Unable to generate roster of size {nrOfPlayers}")
+        self.active_roster = []
         for _ in range(nrOfPlayers):
-            roster_list.append(Player(names.get_full_name().split()[0], names.get_full_name().split()[1], self.get_name()))
-        return roster_list
-
+            self.active_roster.append(Player(names.get_full_name().split()[0], names.get_full_name().split()[1], self))
 
